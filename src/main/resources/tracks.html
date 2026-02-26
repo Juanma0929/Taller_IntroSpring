@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tracks</title>
+</head>
+<body>
+<form action="./tracks" method="POST">
+    <input type="text" name="id" placeholder="ID"><br>
+    <input type="text" name="title" placeholder="Title"><br>
+    <input type="text" name="genre" placeholder="Genre"><br>
+    <input type="text" name="duration" placeholder="Duration"><br>
+    <input type="text" name="albumTitle" placeholder="Album Title"><br>
+    <input type="text" name="artistNames" placeholder="Artista1, Artista2, Artista3">
+
+    <button>Save Track</button>
+</form>
+
+<form action="./tracks/delete" method="POST">
+    <input type="text" name="id" placeholder="Track's ID"><br>
+    <button>Delete Track</button>
+</form>
+
+<ol>
+    $tracks
+</ol>
+</body>
+</html>

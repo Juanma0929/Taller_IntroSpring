@@ -14,7 +14,7 @@ import org.example.service.ArtistService;
 import java.io.IOException;
 import java.io.InputStream;
 
-@WebServlet(urlPatterns = {"/artists", "/artists/delete", "/artists/search"})
+@WebServlet(urlPatterns = {"/artists", "/artists/delete", "/artists/search"}, loadOnStartup = 1)
 public class ArtistServlet extends HttpServlet {
 
     private ArtistService artistService;
@@ -36,6 +36,7 @@ public class ArtistServlet extends HttpServlet {
         }
 
         content = content.replace("$artists", artistsHtmlSb.toString());
+        content = content.replace("$searchResult", "");
         resp.getWriter().println(content);
     }
 
@@ -46,9 +47,13 @@ public class ArtistServlet extends HttpServlet {
         String path = req.getServletPath();
 
         if (path.equals("/artists/delete")){
-            artist.setId(Integer.parseInt(req.getParameter("id")));
-            artistService.deleteArtist(artist);
-            resp.sendRedirect( req.getContextPath() + "/artists");
+            try {
+                artist.setId(Integer.parseInt(req.getParameter("id")));
+                artistService.deleteArtist(artist);
+            } catch (NumberFormatException e) {
+                System.out.println("ID inválido para eliminar artista: " + req.getParameter("id"));
+            }
+            resp.sendRedirect(req.getContextPath() + "/artists");
 
         }else if(path.equals("/artists")){
             artist.setId(Integer.parseInt(req.getParameter("id")));
@@ -56,30 +61,34 @@ public class ArtistServlet extends HttpServlet {
             artist.setNationality(req.getParameter("nationality"));
 
             artistService.saveArtist(artist);
-            resp.sendRedirect("./artists");
+            resp.sendRedirect(req.getContextPath() + "/artists");
         }else if(path.equals("/artists/search")){
 
             String name = req.getParameter("name");
             Artist artistFound = artistService.findByName(name);
+
+            InputStream is = getClass().getClassLoader().getResourceAsStream("artists.html");
+            String content = new String(is.readAllBytes());
+
+            StringBuilder allArtistsSb = new StringBuilder();
+            for (Artist a : artistService.getArtistList()) {
+                allArtistsSb.append("<li>" + a.getName() + "</li>");
+            }
+            content = content.replace("$artists", allArtistsSb.toString());
+
             if(artistFound != null){
-
-                InputStream is = getClass().getClassLoader().getResourceAsStream("artists.html");
-                String content = new String(is.readAllBytes());
-
-                StringBuilder artistsHtmlSb = new StringBuilder();
-                artistsHtmlSb.append("<li>" + artistFound.getName() + "<ul>");
-
+                StringBuilder searchResultSb = new StringBuilder();
+                searchResultSb.append("<li>" + artistFound.getName() + " (" + artistFound.getNationality() + ")<ul>");
                 for (Track track : artistFound.getTracks()) {
-                    artistsHtmlSb.append("<li>" + track.getTitle() + " - " + track.getGenre() + "</li>");
+                    searchResultSb.append("<li>" + track.getTitle() + " - " + track.getGenre() + "</li>");
                 }
-
-                artistsHtmlSb.append("</ul></li>");
-
-
-                content = content.replace("$searchResult", artistsHtmlSb.toString());
-                resp.getWriter().println(content);
+                searchResultSb.append("</ul></li>");
+                content = content.replace("$searchResult", searchResultSb.toString());
+            } else {
+                content = content.replace("$searchResult", "<li>Artista no encontrado</li>");
             }
 
+            resp.getWriter().println(content);
         }
     }
 }

@@ -15,7 +15,7 @@ import org.example.service.TrackService;
 import java.io.IOException;
 import java.io.InputStream;
 
-@WebServlet(urlPatterns = {"/tracks", "/tracks/delete", "/tracks/search"})
+@WebServlet(urlPatterns = {"/tracks", "/tracks/delete", "/tracks/search"}, loadOnStartup = 2)
 public class TrackServlet extends HttpServlet {
 
     private TrackService trackService;
@@ -35,8 +35,14 @@ public class TrackServlet extends HttpServlet {
 
         StringBuilder tracksHtmlSb = new StringBuilder();
         for(Track tracks : trackService.getTracksList()){
-            tracksHtmlSb.append("<li>"+tracks.getTitle()+ "-" +tracks.getGenre()+
-                    "</li>");
+            tracksHtmlSb.append("<li>" + tracks.getTitle() + " - " + tracks.getGenre()
+                    + " | Album: " + tracks.getAlbumTitle()
+                    + " | Duración: " + tracks.getDuration() + "s"
+                    + "<ul>");
+            for (Artist artist : tracks.getArtists()) {
+                tracksHtmlSb.append("<li>" + artist.getName() + "</li>");
+            }
+            tracksHtmlSb.append("</ul></li>");
         }
 
 
@@ -54,7 +60,7 @@ public class TrackServlet extends HttpServlet {
         if (path.equals("/tracks/delete")){
             track.setId(Integer.parseInt(req.getParameter("id")));
             trackService.deleteTrack(track);
-            resp.sendRedirect( req.getContextPath() + "/artists");
+            resp.sendRedirect( req.getContextPath() + "/tracks");
 
         }else if(path.equals("/tracks")) {
             track.setId(Integer.parseInt(req.getParameter("id")));
@@ -75,7 +81,7 @@ public class TrackServlet extends HttpServlet {
                 }
             }
             trackService.saveTrack(track);
-            resp.sendRedirect("./tracks");
+            resp.sendRedirect(req.getContextPath() + "/tracks");
         }
 
     }

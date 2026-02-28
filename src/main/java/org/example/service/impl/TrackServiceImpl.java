@@ -18,7 +18,9 @@ public class TrackServiceImpl implements TrackService {
 
 
     public TrackServiceImpl(@Qualifier("trackRepositoryImpl")
-                            TrackRepository trackRepository) {
+                            TrackRepository trackRepository,
+                            @Qualifier("artistRepositoryImpl")
+                            ArtistRepository artistRepository) {
         this.trackRepository = trackRepository;
         this.artistRepository = artistRepository;
     }

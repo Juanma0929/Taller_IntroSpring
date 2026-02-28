@@ -2,11 +2,9 @@ package org.example.repository.impl;
 
 import org.example.entity.Artist;
 import org.example.repository.ArtistRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-@Repository
 public class ArtistRepositoryImpl implements ArtistRepository {
 
     private ArrayList<Artist> artists = new ArrayList<>();

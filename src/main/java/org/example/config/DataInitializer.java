@@ -4,16 +4,18 @@ import org.example.entity.Artist;
 import org.example.entity.Track;
 import org.example.service.ArtistService;
 import org.example.service.TrackService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@ComponentScan(basePackages = "org.example")
-public class AppConfig {
+public class DataInitializer {
 
-    @Bean
-    public String dataInitializer(ArtistService artistService, TrackService trackService) {
+    private ArtistService artistService;
+    private TrackService trackService;
+
+    public DataInitializer(ArtistService artistService, TrackService trackService) {
+        this.artistService = artistService;
+        this.trackService = trackService;
+    }
+
+    public void init() {
         String[] artistNames = {
             "The Beatles", "Led Zeppelin", "Pink Floyd", "Queen", "Metallica",
             "Nirvana", "AC/DC", "The Rolling Stones", "David Bowie", "Radiohead"
@@ -54,7 +56,6 @@ public class AppConfig {
                 tracks[i * 5 + j].addArtists(artists[i]);
             }
         }
-
-        return "data-initialized";
     }
 }
+

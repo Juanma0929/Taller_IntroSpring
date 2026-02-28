@@ -1,13 +1,12 @@
 package org.example.context;
 
-import org.example.config.AppConfig;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class AppContext {
 
     private static final ApplicationContext context =
-            new AnnotationConfigApplicationContext(AppConfig.class);
+            new ClassPathXmlApplicationContext("applicationContext.xml");
 
     private AppContext() {}
 

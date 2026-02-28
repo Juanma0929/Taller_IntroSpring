@@ -2,15 +2,39 @@ package org.example.config;
 
 import org.example.entity.Artist;
 import org.example.entity.Track;
+import org.example.repository.ArtistRepository;
+import org.example.repository.TrackRepository;
+import org.example.repository.impl.ArtistRepositoryImpl;
+import org.example.repository.impl.TrackRepositoryImpl;
 import org.example.service.ArtistService;
 import org.example.service.TrackService;
+import org.example.service.impl.ArtistServiceImpl;
+import org.example.service.impl.TrackServiceImpl;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = "org.example")
 public class AppConfig {
+
+    @Bean
+    public ArtistRepository artistRepositoryImpl() {
+        return new ArtistRepositoryImpl();
+    }
+
+    @Bean
+    public TrackRepository trackRepositoryImpl() {
+        return new TrackRepositoryImpl();
+    }
+
+    @Bean
+    public ArtistService artistServiceImpl() {
+        return new ArtistServiceImpl(artistRepositoryImpl());
+    }
+
+    @Bean
+    public TrackService trackServiceImpl() {
+        return new TrackServiceImpl(trackRepositoryImpl(), artistRepositoryImpl());
+    }
 
     @Bean
     public String dataInitializer(ArtistService artistService, TrackService trackService) {
@@ -48,7 +72,6 @@ public class AppConfig {
             tracks[i] = t;
         }
 
-        // Asignar 5 tracks a cada artista (tracks 0-4 -> artista 0, tracks 5-9 -> artista 1, etc.)
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 5; j++) {
                 tracks[i * 5 + j].addArtists(artists[i]);

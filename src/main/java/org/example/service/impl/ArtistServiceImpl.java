@@ -3,21 +3,15 @@ package org.example.service.impl;
 import org.example.entity.Artist;
 import org.example.repository.ArtistRepository;
 import org.example.service.ArtistService;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class ArtistServiceImpl implements ArtistService {
-
 
     private ArtistRepository artistRepository;
 
-    public ArtistServiceImpl(@Qualifier("artistRepositoryImpl")
-                             ArtistRepository artistRepository) {
+    public ArtistServiceImpl(ArtistRepository artistRepository) {
         this.artistRepository = artistRepository;
-
 
     }
 

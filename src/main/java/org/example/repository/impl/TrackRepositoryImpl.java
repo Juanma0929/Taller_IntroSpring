@@ -2,11 +2,9 @@ package org.example.repository.impl;
 
 import org.example.entity.Track;
 import org.example.repository.TrackRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-@Repository
 public class TrackRepositoryImpl implements TrackRepository {
 
     ArrayList<Track> tracks = new ArrayList<>();

@@ -2,11 +2,9 @@ package org.example.repository.impl;
 
 import org.example.entity.Artist;
 import org.example.repository.ArtistRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-@Repository
 public class ArtistRepositoryImpl implements ArtistRepository {
 
     private ArrayList<Artist> artists = new ArrayList<>();
@@ -20,7 +18,6 @@ public class ArtistRepositoryImpl implements ArtistRepository {
     @Override
     public void delete(Artist artist){
         artists.remove(artist);
-        //TODO: arreglar lo que sale en consola
         System.out.println("Artist deleted: " + artists.size());
     }
 
@@ -34,7 +31,6 @@ public class ArtistRepositoryImpl implements ArtistRepository {
         return artists;
     }
 
-    //TODO: revisar esta basura
     @Override
     public Artist findArtist(String name){
         Artist foundArtist = null;

@@ -18,7 +18,6 @@ public class ArtistRepositoryImpl implements ArtistRepository {
     @Override
     public void delete(Artist artist){
         artists.remove(artist);
-        //TODO: arreglar lo que sale en consola
         System.out.println("Artist deleted: " + artists.size());
     }
 
@@ -32,7 +31,6 @@ public class ArtistRepositoryImpl implements ArtistRepository {
         return artists;
     }
 
-    //TODO: revisar esta basura
     @Override
     public Artist findArtist(String name){
         Artist foundArtist = null;
